@@ -123,6 +123,10 @@ endif
 # Determine the OS. Borrowed from Perl's Configure.
 OSNAME := $(shell $(SHELL) ./getos.sh)
 
+# Target to force uninstall of ALL pgtap files. Handy when doing cross-version development.
+uninstall_ALL: uninstall
+	rm -f $(DESTDIR)$(datadir)/extension/pgtap-*
+
 # Make sure we build these.
 EXTRA_CLEAN += $(_IN_PATCHED)
 all: $(_IN_PATCHED) sql/pgtap.sql sql/uninstall_pgtap.sql sql/pgtap-core.sql sql/pgtap-schema.sql

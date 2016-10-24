@@ -50,6 +50,9 @@ REGRESS = --schedule $(TB_DIR)/run.sch
 
 # REMAINING TEST VARIABLES ARE DEFINED IN THE TEST SECTION
 
+# sort is necessary to remove dupes so install won't complain
+DATA         = $(sort $(wildcard sql/*--*.sql) $(_IN_PATCHED)) # NOTE! This gets reset below!
+
 ifdef NO_PGXS
 top_builddir = ../..
 PG_CONFIG := $(top_builddir)/src/bin/pg_config/pg_config
@@ -138,7 +141,7 @@ sql/$(MAINEXT)-schema--$(EXTVERSION).sql: sql/$(MAINEXT)-schema.sql
 	cp $< $@
 
 # I think this can go away...
-DATA         = $(sort $(wildcard sql/*--*.sql) $(_IN_PATCHED)) # NOTE! This gets reset below!
+DATA         = $(sort $(wildcard sql/*--*.sql) $(_IN_PATCHED))
 
 EXTRA_CLEAN += sql/$(MAINEXT)--$(EXTVERSION).sql sql/$(MAINEXT)-core--$(EXTVERSION).sql sql/$(MAINEXT)-schema--$(EXTVERSION).sql
 endif
@@ -181,6 +184,12 @@ ifeq ($(shell echo $(VERSION) | grep -qE "9[.][01234]|8[.][1234]" && echo yes ||
 endif
 ifeq ($(shell echo $(VERSION) | grep -qE "9[.]0|8[.][1234]" && echo yes || echo no),yes)
 	patch -p0 < compat/9.0/pgtap--0.96.0--0.97.0.patch
+endif
+EXCRA_CLEAN += sql/pgtap--0.95.0--0.96.0.sql
+sql/pgtap--0.95.0--0.96.0.sql: sql/pgtap--0.95.0--0.96.0.sql.in
+	cp $< $@
+ifeq ($(shell echo $(VERSION) | grep -qE "9[.][012]|8[.][1234]" && echo yes || echo no),yes)
+	patch -p0 < compat/9.2/pgtap--0.95.0--0.96.0.patch
 endif
 
 sql/uninstall_pgtap.sql: sql/pgtap.sql

@@ -307,6 +307,8 @@ pgtap-version-%: $(EXTENSION_DIR)/pgtap--%.sql
 
 # Travis will complain if we reinstall too quickly, so be more intelligent about this
 $(EXTENSION_DIR)/pgtap--$(EXTVERSION).sql: sql/pgtap--$(EXTVERSION).sql
+	ls -la $@
+	ls -la $<
 	$(MAKE) install
 
 

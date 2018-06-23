@@ -14,4 +14,4 @@ env:
   - PGVERSION=9.5
   - PGVERSION=9.6
   - PGVERSION=10
-script: bash ./pg-travis-test.sh && PGPORT=55435 psql PATH=/usr/lib/postgresql/$PGVERSION/bin/:$PATH make test
+script: bash ./pg-travis-test.sh && PGPORT=55435 PATH=/usr/lib/postgresql/$PGVERSION/bin/:$PATH make test

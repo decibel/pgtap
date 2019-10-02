@@ -61,3 +61,5 @@ if [ -n "$failed" ]; then
     echo "These test targets failed:$failed"
     exit 1
 fi
+
+make --version

@@ -55,11 +55,11 @@ for t in all install ; do
     test_make $t
 done
 
+make --version
+
 if [ -n "$failed" ]; then
     set +ux
     # $failed will have a leading space if it's not empty
     echo "These test targets failed:$failed"
     exit 1
 fi
-
-make --version
